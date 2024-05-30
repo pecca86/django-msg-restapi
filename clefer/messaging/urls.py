@@ -9,6 +9,4 @@ urlpatterns = [
     path('messages/sent/', views.get_send_messages, name='get_send_messages'),
     path('messages/received/', views.get_received_messages, name='get_received_messages'),
     path('messages/<int:message_id>/', views.get_message, name='get_message'),
-    # path('send/<int:user_id>/', views.send_message_to_user, name='send_message_to_user'),
-
 ]
