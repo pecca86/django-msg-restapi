@@ -1,7 +1,7 @@
 openapi: 3.0.2
 info:
   title: ''
-  version: ''
+  version: 1.0.0
 paths:
   /api/v1/users/:
     get:
@@ -68,14 +68,19 @@ paths:
     get:
       operationId: listget_messages
       description: ''
-      parameters: []
+      parameters:
+      - name: qstring
+        required: false
+        in: query
+        description: Query string used to filter for string within a message thread.
+        schema:
+          type: string
       responses:
         '200':
           content:
             application/json:
               schema:
-                type: array
-                items: {}
+                $ref: '#/components/schemas/Message'
           description: ''
       tags:
       - api
@@ -86,16 +91,14 @@ paths:
       requestBody:
         content:
           application/json:
-            schema: {}
-          application/x-www-form-urlencoded:
-            schema: {}
-          multipart/form-data:
-            schema: {}
+            schema:
+              $ref: '#/components/schemas/MessageBody'
       responses:
         '201':
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/Message'
           description: ''
       tags:
       - api
@@ -254,17 +257,14 @@ components:
           readOnly: true
         username:
           type: string
-          maxLength: 50
-        email:
-          type: string
           format: email
+          maxLength: 50
         password:
           type: string
           writeOnly: true
           maxLength: 100
       required:
       - username
-      - email
       - password
     TokenObtainPair:
       type: object
@@ -288,3 +288,50 @@ components:
           readOnly: true
       required:
       - refresh
+    MessageBody:
+      type: object
+      properties:
+        receiver_id:
+          type: integer
+        message_text:
+          type: string
+          maxLength: 500
+      required:
+      - receiver
+      - message
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        sender_id:
+          type: integer
+          format: integer
+          maxLength: 50
+        receiver_id:
+          type: integer
+          format: integer
+          maxLength: 50
+        message_text:
+          type: string
+          maxLength: 500
+        send_date:
+          type: string
+          format: date-time
+          readOnly: true
+        received_date:
+          type: string
+          format: date-time
+          readOnly: true
+        is_read:
+          type: boolean
+          readOnly: true
+      required:
+      - sender
+      - receiver
+      - message
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/PEKKARANTAAHO86/Clefer-msg-api/1.0.0

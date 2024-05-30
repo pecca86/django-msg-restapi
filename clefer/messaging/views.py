@@ -94,7 +94,7 @@ def get_message(request, message_id, format='json'):
             message.save()
 
     except Message.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({'message': f'message with id {message_id} not found'}, status=status.HTTP_404_NOT_FOUND)
     
     serializer = MessageSerializer(message)
     return Response(serializer.data)
