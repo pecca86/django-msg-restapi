@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib import auth
 
 class Message(models.Model):
-    message_text = models.CharField(max_length=500)
+    message_text = models.CharField(max_length=500, default="", blank=False, null=False, verbose_name="Message text")
     normalized_msg_text = models.CharField(max_length=500, default=None, blank=True, null=True)
     send_date = models.DateTimeField('date send', default=None)
     received_date = models.DateTimeField('date received', default=timezone.now, null=True)
@@ -15,7 +15,8 @@ class Message(models.Model):
         return self.message_text
 
     def save(self, *args, **kwargs):
-        self.normalized_msg_text = self.message_text.lower().strip()
+        if self.message_text is not None:
+            self.normalized_msg_text = self.message_text.lower().strip()
         self.send_date = timezone.now()
         super(Message, self).save(*args, **kwargs)
         

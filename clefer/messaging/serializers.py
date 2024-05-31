@@ -3,7 +3,7 @@ from .models import Message
 
 class MessageSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    message_text = serializers.CharField(max_length=500, allow_blank=True, required=True)
+    message_text = serializers.CharField(max_length=500, allow_blank=False, required=True)
     send_date = serializers.DateTimeField(read_only=True)
     received_date = serializers.DateTimeField(read_only=True)
     sender_id = serializers.ReadOnlyField(source='sender.id')
